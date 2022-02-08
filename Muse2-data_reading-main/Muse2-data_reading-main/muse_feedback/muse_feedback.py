@@ -116,18 +116,18 @@ if __name__ == "__main__":
 
             # Alpha Protocol:
             # Simple redout of alpha power, divided by delta waves in order to rule out noise
-            alpha_metric = smooth_band_powers[Band.Alpha] / \
-                smooth_band_powers[Band.Delta]
-            print('Alpha Relaxation: ', alpha_metric)
+            #alpha_metric = smooth_band_powers[Band.Alpha] / \
+            #    smooth_band_powers[Band.Delta]
+            #print('Alpha Relaxation: ', alpha_metric)
             
             
 
             # Beta Protocol:
             # Beta waves have been used as a measure of mental activity and concentration
             # This beta over theta ratio is commonly used as neurofeedback for ADHD
-            # beta_metric = smooth_band_powers[Band.Beta] / \
-            #     smooth_band_powers[Band.Theta]
-            # print('Beta Concentration: ', beta_metric)
+            beta_metric = smooth_band_powers[Band.Beta] / \
+                smooth_band_powers[Band.Theta]
+            print('Beta Concentration: ', beta_metric)
 
             # Alpha/Theta Protocol:
             # This is another popular neurofeedback metric for stress reduction
