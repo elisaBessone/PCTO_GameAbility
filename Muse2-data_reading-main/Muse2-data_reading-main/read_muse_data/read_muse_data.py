@@ -55,10 +55,10 @@ if __name__ == "__main__":
             """ 3.2 COMPUTE BAND POWERS """
             data_epoch = utils.get_last_data(eeg_buffer, EPOCH_LENGTH * fs)
             band_powers = utils.compute_band_powers(data_epoch, fs)
-            #print (band_powers)
+            print (band_powers)
             
             """prova per concentrazione"""
-            band_beta = utils.compute_beta(data_epoch, fs)
+            #band_beta = utils.compute_beta(data_epoch, fs)
             #print(band_beta)
             
             #band_alpha = utils.compute_alpha(data_epoch, fs)
