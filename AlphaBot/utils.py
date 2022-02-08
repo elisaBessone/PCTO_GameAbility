@@ -219,14 +219,14 @@ def compute_beta(eegdata, fs):
 
     feature_vector = np.log10(feature_vector)
     
-    if(meanBeta > 8):
+    if(meanBeta > 12):
         print(meanBeta)
         print("concentrato")
         comando = 'W'
     else:
         print(meanBeta)
         print("non concentrato")
-        comando = 'STOP'
+        comando = 'ESCI'
 
     return comando
 

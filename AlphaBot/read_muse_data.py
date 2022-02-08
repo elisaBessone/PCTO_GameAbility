@@ -8,7 +8,9 @@ from pylsl import StreamInlet, resolve_byprop
 import utils
 import threading, queue
 import time
-from muselsl import stream, list_muses
+from muselsl import stream, list_muses, view
+
+#muselsl stream --ppg --acc --gyro
 
 class Band:
     Delta = 0
@@ -31,9 +33,11 @@ def muse():
         # Search and active LSL streams
         print('Looking for an EEG stream...')
         streams = resolve_byprop('type', 'EEG', timeout=2)
-        
-        muses = list_muses()
+        #print(streams)
+        """muses = list_muses()
+        print(muses)
         stream(muses[0]['address'], ppg_enabled=True, acc_enabled=True, gyro_enabled=True)
+        print(streams)"""
         
         if len(streams) == 0:
             raise RuntimeError('Can\'t find EEG stream.')
@@ -54,6 +58,7 @@ def muse():
         q = queue.Queue()
         cnt = 0
         c = 0 
+        command = 'ESCI'
         try:
             while True:
                 
@@ -84,10 +89,10 @@ def muse():
                     command = 'W'
                     print(command)
                 else:
-                    command = 'STOP'
+                    command = 'ESCI'
                     print(command)
                 
-                time.sleep(2)    
+                time.sleep(1)    
                 c = 0
                        
                 def worker():
@@ -96,17 +101,6 @@ def muse():
                         q.task_done()
 
                 # turn-on the worker thread
-                
-                """c = 0
-                for x in q:
-                    if(x == 'W'):
-                        c += 1
-                
-                if(c >= 3):
-                    command = 'W'
-                    print(command)
-                else:
-                    command = 'STOP'"""
                     
                 threading.Thread(target=worker, daemon=True).start()
                 time.sleep(5)
@@ -129,4 +123,4 @@ def muse():
         except KeyboardInterrupt:
             print('Closing!')
     return command #band_beta in una media di 5
-#muse()
+muse()
