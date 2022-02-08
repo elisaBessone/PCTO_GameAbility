@@ -84,7 +84,7 @@ class AlphaBot(object):  #classe dell'Alfabot
         self.PWMB.start(self.PB)
         self.stop()
 
-    def backward(self, speed=60):  #avanti a velocità 60
+    def backward(self, speed=80):  #avanti a velocità 60
         self.PWMA.ChangeDutyCycle(speed)
         self.PWMB.ChangeDutyCycle(speed)
         GPIO.output(self.IN1, GPIO.HIGH)
@@ -159,7 +159,7 @@ def main():
     s = sck.socket(sck.AF_INET, sck.SOCK_STREAM) 
     s.bind(('0.0.0.0', 3450))       #bind del server tcp
     s.listen()
-    Ab= AlphaBot()      #inizzializo alphabot
+    Ab = AlphaBot()      #inizzializzo alphabot
 
     running = True
    
@@ -195,7 +195,7 @@ def main():
                 Ab.left()
                 time.sleep(1)   
                 Ab.stop()
-            if messaggio.upper().startswith("STOP"):
+            if messaggio.upper().startswith("ESCI"):
                 Ab.stop()
 
     s.close()

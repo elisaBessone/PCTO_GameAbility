@@ -226,7 +226,7 @@ def compute_beta(eegdata, fs):
     else:
         print(meanBeta)
         print("non concentrato")
-        comando = 'stop'
+        comando = 'STOP'
 
     return comando
 
