@@ -77,7 +77,7 @@ class AlphaBot(object):  #classe dell'Alfabot
         
         
 
-    def left(self, speed = 25):     #girare a sinistra velocità settata in precedenza
+    def left(self, speed = 25):     #girare a sinistra con velocità 25
         self.PWMA.ChangeDutyCycle(speed)
         self.PWMB.ChangeDutyCycle(speed)
         GPIO.output(self.IN1, GPIO.LOW)
@@ -86,7 +86,7 @@ class AlphaBot(object):  #classe dell'Alfabot
         GPIO.output(self.IN4, GPIO.HIGH)
     
     
-    def right(self, speed = 25):    #destra con la velocità settata in precedenza
+    def right(self, speed = 25):    #girare a destra con velocità 25
         self.PWMA.ChangeDutyCycle(speed)
         self.PWMB.ChangeDutyCycle(speed)
         GPIO.output(self.IN1, GPIO.HIGH)
@@ -102,6 +102,7 @@ class AlphaBot(object):  #classe dell'Alfabot
         self.PB = value
         self.PWMB.ChangeDutyCycle(self.PB)    
         
+    #funzione che inizializza i motori
     def set_motor(self, left, right):
         if (right >= 0) and (right <= 100):
             GPIO.output(self.IN1, GPIO.HIGH)
