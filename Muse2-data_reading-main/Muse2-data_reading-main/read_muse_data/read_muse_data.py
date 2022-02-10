@@ -3,6 +3,8 @@ read muse data
 PCTO project of ITIS MARIO DELPOZZO CUNEO
 """
 
+#stampa i dati EEG dari dal muse dal terminale
+
 import numpy as np 
 from pylsl import StreamInlet, resolve_byprop
 import utils

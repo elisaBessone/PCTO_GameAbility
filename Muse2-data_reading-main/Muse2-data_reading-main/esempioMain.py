@@ -1,4 +1,7 @@
 #-*- coding: utf-8 -*-
+
+#esempio main
+
 import argparse
 import sys
 #from cli import CLI
