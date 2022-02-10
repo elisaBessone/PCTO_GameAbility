@@ -1,3 +1,5 @@
+#prova di ricerca dell'eye tracker
+
 import tobii_research as tr
 import time
 found_eyetrackers = tr.find_all_eyetrackers()
