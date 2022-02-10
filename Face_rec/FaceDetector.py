@@ -1,3 +1,6 @@
+#face detector 
+#utilizzando opencv
+
 import numpy as np
 import cv2
 

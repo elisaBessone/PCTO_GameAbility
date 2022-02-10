@@ -1,3 +1,7 @@
+#face recognicion e eye_track
+#utilizzo di opencv
+#crea un rettangolo blu attorno alla faccia e due rettangoli verdi attorno gli ochhi
+
 import numpy as np
 import cv2
 
