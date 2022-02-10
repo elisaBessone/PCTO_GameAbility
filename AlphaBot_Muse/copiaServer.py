@@ -2,6 +2,8 @@
 # _*_ coding: utf-8 -*-
 #server tpc
 
+#copia del server sull'alphabot
+
 import socket as sck
 import threading as thr
 import time
@@ -72,6 +74,7 @@ class AlphaBot(object):  #classe dell'Alfabot
         self.PA  = 20  #velocità in girare
         self.PB  = 20   #velocità per girare
 
+        #motori
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         GPIO.setup(self.IN1, GPIO.OUT)
@@ -181,23 +184,23 @@ def main():
         else:
             print(messaggio)
                     
-            if messaggio.upper().startswith("W"):
+            if messaggio.upper().startswith("W"): #avanti
                 Ab.forward()
                 time.sleep(1)        #durata del movimento
                 Ab.stop()
-            if messaggio.upper().startswith("D"):
+            if messaggio.upper().startswith("D"): #destra
                 Ab.right()
                 time.sleep(1)   
                 Ab.stop()
-            if messaggio.upper().startswith("S"):
+            if messaggio.upper().startswith("S"): #indietro
                 Ab.backward()
                 time.sleep(1)   
                 Ab.stop()
-            if messaggio.upper().startswith("A"):
+            if messaggio.upper().startswith("A"): #sinistra
                 Ab.left()
                 time.sleep(1)   
                 Ab.stop()
-            if messaggio.upper().startswith("ESCI"):
+            if messaggio.upper().startswith("ESCI"): #fermo
                 Ab.stop()
 
     s.close()

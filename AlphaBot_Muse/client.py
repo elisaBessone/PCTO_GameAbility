@@ -1,3 +1,6 @@
+#primo client per far muovere l'alphabot con i comandi ricevuti da tastiera
+#con prima prova usando il muse 2
+
 import logging
 import socket
 import threading as thr
@@ -42,15 +45,18 @@ def main():
     while True:
         time.sleep(0.2) 
 
-        #comando = input("Inserisci il comando >>>") #prende in input dall'utente il comando
+        comando = input("Inserisci il comando >>>") #prende in input dall'utente il comando
+        
+        #prova muse 2
         #fs = int(info.nominal_srate())
         #data_epoch = utils.get_last_data(eeg_buffer, EPOCH_LENGTH * fs)
-        comando = read_muse_data.muse()
-        if(comando == 'W'):
+        #comando = read_muse_data.muse()
+        
+        if(comando == 'W'): #avanti
             print("comando ricevuto", comando)
             time.sleep(5)
         else:
-            comando = 'ESCI'
+            comando = 'ESCI' #fermo
             print("comando ricevuto", comando)
             time.sleep(5)
             

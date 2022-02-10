@@ -33,10 +33,6 @@ if __name__ == "__main__":
     print('Looking for an EEG stream...')
     streams = resolve_byprop('type', 'EEG', timeout=2)
     #print(streams)
-    """muses = list_muses()
-    print(muses)
-    stream(muses[0]['address'], ppg_enabled=True, acc_enabled=True, gyro_enabled=True)
-    print(streams)"""
         
     if len(streams) == 0:
         raise RuntimeError('Can\'t find EEG stream.')
@@ -59,7 +55,7 @@ if __name__ == "__main__":
             #band_beta = 'STOP'
                 
             #time.sleep(5)
-            def muse():
+            def muse(): #crea un thread che gestisce una coda, prendendo 5 valori di concentrazione, in base ad essi fa una media e percepisce se la persone è concentrata o meno
                 eeg_buffer = np.zeros((int(fs * BUFFER_LENGTH), 1))
                 filter_state = None  # for use with the notch filter
                 q = queue.Queue()
@@ -81,15 +77,15 @@ if __name__ == "__main__":
                     if(band_beta == 'W'):
                         c += 1
                     
-                    q.put(band_beta)
+                    q.put(band_beta) #mette il dato nella coda
                     cnt += 1
                     time.sleep(0.5)
                     
-                if(c >= 3):
+                if(c >= 3): #se in un campione di 5 dati la maggiorparte è W (concentrazione) restituisce come comando W (avanti)
                     command = 'W'
                     print(command)
                 else:
-                    command = 'ESCI'
+                    command = 'ESCI' #altrimenti sta fermo (ESCI)
                     print(command)
                     
                 time.sleep(1)    
@@ -97,15 +93,14 @@ if __name__ == "__main__":
                         
                 def worker():
                     while True:
-                        band_beta = q.get()
+                        band_beta = q.get() #toglie gli elementi dalla coda
                         q.task_done()
 
                 # turn-on the worker thread
                         
-                threading.Thread(target=worker, daemon=True).start()
+                threading.Thread(target=worker, daemon=True).start() #creazione del thread
                 time.sleep(5)
                 cnt = 0 
-                #cnt -= 1
                     
                 #print(f'Working on {item}')
                 #print(f'Finished {item}')
@@ -114,14 +109,11 @@ if __name__ == "__main__":
                 # block until all tasks are done
                 q.join()
                 #print('All work completed')
-                    
-                #band_beta = utils.compute_beta(data_epoch, fs)
-                #print(band_beta)
-                    
-                #band_alpha = utils.compute_alpha(data_epoch, fs)
-                return command
+                
+                return command #ritorna il comando da fornire all'alphabot
             muse()
 
+    #CTRL+C per stoppare
     except KeyboardInterrupt:
         print('Closing!')
 

@@ -5,7 +5,6 @@ Muse LSL Example Auxiliary Tools
 These functions perform the lower-level operations involved in buffering,
 epoching, and transforming EEG data into frequency bands
 
-@author: Cassani
 """
 
 import os
@@ -213,13 +212,13 @@ def compute_beta(eegdata, fs):
     meanAlpha = np.mean(PSD[ind_alpha, :], axis=0)
     # Beta 12-30
     ind_beta, = np.where((f >= 12) & (f < 30))
-    meanBeta = np.mean(PSD[ind_beta, :], axis=0)
+    meanBeta = np.mean(PSD[ind_beta, :], axis=0) #livello di concentrazione
 
     feature_vector = np.concatenate((meanBeta, meanAlpha), axis=0)
 
-    feature_vector = np.log10(feature_vector)
+    feature_vector = np.log10(feature_vector) #vettore di segnali beta e alpha
     
-    if(meanBeta > 8):
+    if(meanBeta > 6):  
         print(meanBeta)
         print("concentrato")
         comando = 'W'
@@ -228,7 +227,7 @@ def compute_beta(eegdata, fs):
         print("non concentrato")
         comando = 'ESCI'
 
-    return comando
+    return comando #se concentrato va avanti (W) altrimenti sta fermo (ESCI)
 
 def compute_alpha(eegdata, fs):
     """prova per concentrazione"""

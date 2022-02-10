@@ -1,3 +1,8 @@
+#versione client finale per comandare l'alphabot attraverso il muse 2
+#va avanti se si è concentrati
+#se si è concentrati e si gira la testa il robot gira nella direzione in cui il soggetto ha girato la testa
+#se non si è concentrati l'alphabot sta fermo
+
 import logging
 import socket
 import threading as thr
@@ -6,7 +11,7 @@ import ModuloClient
 
 registered = False
 nickname = ""
-SERVER=('192.168.0.123', 3450) #3450
+SERVER=('192.168.0.123', 3450) #192.168.0.123 indirizzo IP alphabot
 class Receiver(thr.Thread):
     def __init__(self, s): #Costruttore Thread, self è come il this, s è il socket
         thr.Thread.__init__(self)  #costruttore 
@@ -38,38 +43,22 @@ def main():
     ricev = Receiver(s) #riceve i messaggi, per far modo che il server quando rimanda il messaggio ai client arriva a tutti
     ricev.start()
 
-    i = 0
-    c = 'ESCI'
-    cnt = 0
     comando = 'ESCI'
     while True:
         time.sleep(0.2) 
 
-        #comando = input("Inserisci il comando >>>") #prende in input dall'utente il comando
-        
-        """while(i < 5):
-            c = ModuloClient.museConcentrazione()
-            if(c == 'W'):
-                cnt += 1
-                
-        if(cnt >= 3):
-            concentrazione = 'W'
-        else:
-            concentrazione = 'ESCI'
-        i = 0"""
-        
-        concentrazione = ModuloClient.museConcentrazione()
+        concentrazione = ModuloClient.museConcentrazione() #funzione che calcola il livello di concentrazione
         
         print("comando concentrazione: ", concentrazione)
         
         time.sleep(0.5)
         
-        if(concentrazione == 'W'):
-            comando = ModuloClient.museDxSx()
+        if(concentrazione == 'W'): #soggetto concentrato
+            comando = ModuloClient.museDxSx() #controllo di dove e se il soggetto gira la testa
             s.sendall(comando.encode()) #manda il messaggio al server
             #time.sleep(5)       
         else:
-            comando = concentrazione
+            comando = concentrazione #alphabot fermo (ESCI) causa soggetto non concentrato
             s.sendall(comando.encode()) #manda il messaggio al server
             #time.sleep(5)
 

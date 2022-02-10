@@ -13,6 +13,8 @@ The neurofeedback protocols described here are inspired by
 Adapted from https://github.com/NeuroTechX/bci-workshop
 """
 
+#un altro metodo per rilevazione dei segnali EEG
+
 import numpy as np  # Module that simplifies computations on matrices
 import matplotlib.pyplot as plt  # Module used for plotting
 from pylsl import StreamInlet, resolve_byprop  # Module to receive EEG data
@@ -61,9 +63,9 @@ if __name__ == "__main__":
     #stream.acc_enabled = True
     #stream.gyro_enabled = True
     
-    muses = list_muses()
+    #muses = list_muses()
     #stream._print_muse_list(muses)
-    stream(muses[0]['00:55:da:b5:49:3e'], ppg_enabled=True, acc_enabled=True, gyro_enabled=True)
+    #stream(muses[0]['00:55:da:b5:49:3e'], ppg_enabled=True, acc_enabled=True, gyro_enabled=True)
     
     if len(streams) == 0:
         raise RuntimeError('Can\'t find EEG stream.')
