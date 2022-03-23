@@ -49,16 +49,19 @@ def main():
 
         concentrazione = ModuloClient.museConcentrazione() #funzione che calcola il livello di concentrazione
         
-        print("comando concentrazione: ", concentrazione)
+        #print("comando concentrazione: ", concentrazione)
         
         time.sleep(0.5)
         
+        #lettura_file = open("file.txt", "r").read()
         if(concentrazione == 'W'): #soggetto concentrato
             comando = ModuloClient.museDxSx() #controllo di dove e se il soggetto gira la testa
+            print("comando concentrazione: ", comando)
             s.sendall(comando.encode()) #manda il messaggio al server
             #time.sleep(5)       
         else:
             comando = concentrazione #alphabot fermo (ESCI) causa soggetto non concentrato
+            print("comando concentrazione: ", concentrazione)
             s.sendall(comando.encode()) #manda il messaggio al server
             #time.sleep(5)
 
