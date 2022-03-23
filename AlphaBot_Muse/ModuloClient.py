@@ -51,15 +51,18 @@ def museDxSx(): #funzione per capire se il soggetto indossante il muse 2 gira la
     gyro_data, timestamp = inlet_Gyro.pull_chunk(
     timeout=1, max_samples=int(SHIFT_LENGTH * fs_Gyro))
         #print(eeg_data[-1])
-    Theta = 0.5*(gyro_data[-1][2] + gyro_data[-2][2]) * 1/fs_Gyro #velocita in questo istante, media degli ultimi 2 valori, per giroscopio
-    if(Theta > 0.1): #va a sinistra
+    #Theta = 0.5*(gyro_data[-1][2] + gyro_data[-2][2]) * 1/fs_Gyro #velocita in questo istante, media degli ultimi 2 valori, per giroscopio
+    #Theta = asse x, girare la testa verso dx e sx
+    Gamma = 0.5*(gyro_data[-1][0] + gyro_data[-2][0]) * 1/fs_Gyro
+    #Gamma inclinazione testa dx e sx
+    if(Gamma > 0.5): #va a sinistra
         comando = 'A'
         print("Gyroscopoe: ", comando)
-    elif(Theta < -0.1): #va a destra
+    elif(Gamma < -0.5): #va a destra
         comando = 'D'
         print("Gyroscopoe: ", comando)
-    else: #rimane dritto
-        comando = 'W'
+    else:
+        comando = 'W' #rimane dritto
         print("Gyroscopoe: ", comando)
                     
         #print(Theta)
