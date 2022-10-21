@@ -29,28 +29,28 @@ def red(mask):
     cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
 		cv2.CHAIN_APPROX_SIMPLE)[-2]
     if len(cnts) > 20:
-        print('ROSSO')
+        print('RED')
         time.sleep(0.1)
         font = cv2.FONT_HERSHEY_SIMPLEX
-        cv2.putText(image, "APERTURA PORTA", (230, 50), font , 0.8, (0, 0, 255), 2, cv2.LINE_AA)
+        cv2.putText(image, "OPEN DOOR", (230, 50), font , 0.8, (0, 0, 255), 2, cv2.LINE_AA)
      
         
 def green(mask):
     cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
 		cv2.CHAIN_APPROX_SIMPLE)[-2]
     if len(cnts) > 20:
-        print('VERDE')
+        print('GREEN')
         time.sleep(0.1)
 	#scrittura su telecamera
         font = cv2.FONT_HERSHEY_SIMPLEX
-        cv2.putText(image, "ACCENDO LA LUCE", (230, 50), font , 0.8, (0, 255, 0), 2, cv2.LINE_AA)
+        cv2.putText(image, "I TURN ON THE LIGHT", (230, 50), font , 0.8, (0, 255, 0), 2, cv2.LINE_AA)
 
 
 server_socket = socket.socket()
 server_socket.bind(('0.0.0.0', 8000))  # ADD IP HERE
 server_socket.listen(0)
 
-#Accettazione della connessione e creazione file simile a un oggetto
+# Connection acceptance and file creation 
 connection = server_socket.accept()[0].makefile('rb')
 kernel = np.ones((8,8), np.uint8)
 
@@ -58,18 +58,14 @@ try:
     img = None
     
     while True:
-        # RLettura lunghezza dell'immagine, se = 0 chiusura
         image_len = struct.unpack('<L', connection.read(struct.calcsize('<L')))[0]
 	
         if not image_len:
             break
-        # Costruzione del flusso di dati
         image_stream = io.BytesIO()
     
         image_stream.write(connection.read(image_len))
-        # Riavvolgimento del flusso e elaborazione di esso
         image_stream.seek(0)
-        #image = Image.open(image_stream)
         image = np.array(Image.open(image_stream))
         
         if img is None:
@@ -82,7 +78,7 @@ try:
         pl.pause(0.01)
         pl.draw()
 	
-	#riconoscimento colore tramite BGR  e HSV
+	#Color recognition with BGR and HSV
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     
         lower_red = np.array([105, 175, 109])
@@ -111,9 +107,8 @@ try:
             break
 
 finally:
-    #Chiusura connessione
+    # connection close
     connection.close()
-    server_socket.close()
-    # Distruzione finestra  
+    server_socket.close() 
     cv2.destroyAllWindows() 
    
