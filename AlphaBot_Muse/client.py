@@ -1,5 +1,4 @@
-#primo client per far muovere l'alphabot con i comandi ricevuti da tastiera
-#con prima prova usando il muse 2
+# first client to move the alphabot with commands received from the keyboard with first test using muse 2
 
 import logging
 import socket
@@ -12,21 +11,21 @@ registered = False
 nickname = ""
 SERVER=('192.168.0.112', 3450)
 class Receiver(thr.Thread):
-    def __init__(self, s): #Costruttore Thread, self è come il this, s è il socket
-        thr.Thread.__init__(self)  #costruttore 
-        self.running = True   #fino a quando esiste
+    def __init__(self, s):
+        thr.Thread.__init__(self) 
+        self.running = True   
         self.s = s 
 
-    def stop_run(self): #in caso di stop
+    def stop_run(self): 
         self.running = False
 
-    def run(self): #Al suo interno vengono eseguite tutte le azioni 
+    def run(self): 
         global registered
 
         while self.running:
             data = self.s.recv(4096).decode()   #ricezione
             
-            if data == "OK":    #Se riceve OK, la connessione e' avvenuta
+            if data == "OK":    # If it gets OK, the connection is made
                 registered = True
                 logging.info(f"\nConnessione avvenuta, registrato. Entrando nella chat mode...")
             
@@ -36,34 +35,34 @@ class Receiver(thr.Thread):
 def main():
     global registered
     global nickname
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #creo un socket TCP / IPv4, primo che manda, creo la base che fa tutto
-    s.connect(SERVER)       #connessione al server
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #I create a TCP socket / IPv4, first that sends, I create the base that does everything
+    s.connect(SERVER)       #connessione to server
 
-    ricev = Receiver(s) #riceve i messaggi, per far modo che il server quando rimanda il messaggio ai client arriva a tutti
+    ricev = Receiver(s) # receives messages, to ensure that the server when it sends the message to the clients arrives at all
     ricev.start()
 
     while True:
         time.sleep(0.2) 
 
-        comando = input("Inserisci il comando >>>") #prende in input dall'utente il comando
+        comando = input("Inserisci il comando >>>") #input from users
         
         #prova muse 2
         #fs = int(info.nominal_srate())
         #data_epoch = utils.get_last_data(eeg_buffer, EPOCH_LENGTH * fs)
         #comando = read_muse_data.muse()
         
-        if(comando == 'W'): #avanti
+        if(comando == 'W'): 
             print("comando ricevuto", comando)
             time.sleep(5)
         else:
-            comando = 'ESCI' #fermo
+            comando = 'ESCI' 
             print("comando ricevuto", comando)
             time.sleep(5)
             
-        s.sendall(comando.encode()) #manda il messaggio al server
+        s.sendall(comando.encode()) # send the message to the server
 
-        if 'exit' in comando:   #In caso si dovesse interrompere la connessione
-            ricev.stop_run()    #interrompe la connessione
+        if 'exit' in comando:   # In case you break the connection
+            ricev.stop_run()    #stop
             logging.info("Disconnessione...")
             break
 
