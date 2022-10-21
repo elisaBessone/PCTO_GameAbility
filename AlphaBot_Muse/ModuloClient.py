@@ -1,6 +1,6 @@
 """
-Modulo con funzioni per rilevare la concentrazione e da che parte si muove la testa con il muse 2
-da importare in un client per l'alphabot
+Module with functions to detect concentration and on which side the head moves with the muse 2
+to import into an alphabot client
 """
 from muselsl import stream, list_muses
 from pylsl import StreamInlet, resolve_byprop
@@ -29,7 +29,7 @@ stream("00:55:da:b5:49:3e", ppg_enabled=True, acc_enabled=True, gyro_enabled=Tru
     #print(stream("00:55:da:b5:49:3e"))
 streams_Gyro = resolve_byprop('type', 'Gyroscope', timeout=2) #fa partire il giroscopio
     #creare un'altra stream per EEG
-streams_EEG = resolve_byprop('type', 'EEG', timeout=2) #fa partire i segnali EEG, che servono per trovare la concentrazione
+streams_EEG = resolve_byprop('type', 'EEG', timeout=2) # starts EEG signals, which are used to find concentration
     #print(streams_Gyro)
     #print(streams_EEG)
     #secondo inlet per EEG
@@ -40,36 +40,36 @@ info_Gyro = inlet_Gyro.info()
 inlet_EEG = StreamInlet(streams_EEG[0], max_chunklen=12)
 info_EEG  = inlet_EEG.info()  
     
-fs_Gyro = int(info_Gyro.nominal_srate()) #frequenza del giroscopio
+fs_Gyro = int(info_Gyro.nominal_srate()) # gyroscope frequency
     #fs2 per EEG
-fs_EEG = int(info_EEG.nominal_srate()) #frequenza segnali EEG
+fs_EEG = int(info_EEG.nominal_srate()) # EEG signal frequency
     #print(fs)
     
-def museDxSx(): #funzione per capire se il soggetto indossante il muse 2 gira la testa e da che parte
+def museDxSx(): # function to understand if the subject wearing the muse 2 turns his head and which side
     """ 3.1 ACQUIRE DATA """
         # Obtain EEG data from the LSL stream
     gyro_data, timestamp = inlet_Gyro.pull_chunk(
     timeout=1, max_samples=int(SHIFT_LENGTH * fs_Gyro))
         #print(eeg_data[-1])
-    #Theta = 0.5*(gyro_data[-1][2] + gyro_data[-2][2]) * 1/fs_Gyro #velocita in questo istante, media degli ultimi 2 valori, per giroscopio
+    #Theta = 0.5*(gyro_data[-1][2] + gyro_data[-2][2]) * 1/fs_Gyro # speed in this instant, average of the last 2 values, per gyroscope
     #Theta = asse x, girare la testa verso dx e sx
     Gamma = 0.5*(gyro_data[-1][0] + gyro_data[-2][0]) * 1/fs_Gyro
-    #Gamma inclinazione testa dx e sx
-    if(Gamma > 0.5): #va a sinistra
+    #Gamma --> right and left head tilt
+    if(Gamma > 0.5): 
         comando = 'A'
         print("Gyroscopoe: ", comando)
-    elif(Gamma < -0.5): #va a destra
+    elif(Gamma < -0.5): 
         comando = 'D'
         print("Gyroscopoe: ", comando)
     else:
-        comando = 'W' #rimane dritto
+        comando = 'W' 
         print("Gyroscopoe: ", comando)
                     
         #print(Theta)
         #print(timestamp)
-    return comando #il comando che entrerà nell'alphabot
+    return comando 
             
-def museConcentrazione(): #restituisce il comando in entrata all'alphabot per la concentrazione
+def museConcentrazione(): # returns the input command to the alphabot for concentration
     eeg_buffer = np.zeros((int(fs_EEG * BUFFER_LENGTH), 1))
     filter_state = None  # for use with the notch filter
     EEG_data, timestamp = inlet_EEG.pull_chunk(
@@ -79,22 +79,22 @@ def museConcentrazione(): #restituisce il comando in entrata all'alphabot per la
 
     """ 3.2 COMPUTE BAND POWERS """
     data_epoch = utils.get_last_data(eeg_buffer, EPOCH_LENGTH * fs_EEG)
-    band_powers = utils.compute_band_powers(data_epoch, fs_EEG) #band_powers(raggi alpha, beta, theta, delta) cioè tutti gli EEG
+    band_powers = utils.compute_band_powers(data_epoch, fs_EEG) 
         #print (band_powers)
-    band_beta = utils.compute_beta(data_epoch, fs_EEG) #compute_beta funzione per il calcolo dei raggi beta(concentrazione)
+    band_beta = utils.compute_beta(data_epoch, fs_EEG) #compute_beta --> function for the calculation of beta rays(concentration)
         
-        #secondo metodo          
+        
         #print(EEG_data[-1])
-        #Beta = 0.5*(EEG_data[-1][2] + EEG_data[-2][2]) * 1/fs_EEG #velocita in questo istante
+        #Beta = 0.5*(EEG_data[-1][2] + EEG_data[-2][2]) * 1/fs_EEG 
         #print(Beta)
         #time.sleep(1)
     """if(Beta > 8):
         print('concentrato')
     else:
         print('non concentrato')"""
-    return band_beta #comando (W / ESCI) per l'alphabot, se concentrato W quindi va avanti, altrimenti ESCI, sta fermo
+    return band_beta # command (W / EXIT) for the alphabot, if concentrated W then goes forward, otherwise EXIT, stand still
 
-#prova delle funzioni    
+# function test    
 """while True: 
         museDxSx()
             
