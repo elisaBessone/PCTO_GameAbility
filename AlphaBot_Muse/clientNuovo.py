@@ -1,7 +1,7 @@
-#versione client finale per comandare l'alphabot attraverso il muse 2
-#va avanti se si è concentrati
-#se si è concentrati e si gira la testa il robot gira nella direzione in cui il soggetto ha girato la testa
-#se non si è concentrati l'alphabot sta fermo
+# final client version to command the alphabot through the muse 2
+# go ahead if you are focused
+#If you are focused and you turn your head, the robot turns in the direction the subject turned their head
+#if you are not focused the alphabot stands still
 
 import logging
 import socket
@@ -11,23 +11,23 @@ import ModuloClient
 
 registered = False
 nickname = ""
-SERVER=('192.168.0.123', 3450) #192.168.0.123 indirizzo IP alphabot
+SERVER=('192.168.0.123', 3450) #192.168.0.123 IP address alphabot
 class Receiver(thr.Thread):
-    def __init__(self, s): #Costruttore Thread, self è come il this, s è il socket
-        thr.Thread.__init__(self)  #costruttore 
-        self.running = True   #fino a quando esiste
+    def __init__(self, s): #Thread constructor, self is like this, s is the socket
+        thr.Thread.__init__(self)  #constructor 
+        self.running = True   #as long as it exists
         self.s = s 
 
-    def stop_run(self): #in caso di stop
+    def stop_run(self): #if it stops
         self.running = False
 
-    def run(self): #Al suo interno vengono eseguite tutte le zioni 
+    def run(self): #Inside it all actions are performed
         global registered
 
         while self.running:
-            data = self.s.recv(4096).decode()   #ricezione
+            data = self.s.recv(4096).decode()   #reception
             
-            if data == "OK":    #Se riceve OK, la connessione è avvenuta
+            if data == "OK":    #If it receives OK, the connection is successful
                 registered = True
                 logging.info(f"\nConnessione avvenuta, registrato. Entrando nella chat mode...")
             
@@ -37,36 +37,36 @@ class Receiver(thr.Thread):
 def main():
     global registered
     global nickname
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #creo un socket TCP / IPv4, primo che manda, creo la base che fa tutto
-    s.connect(SERVER)       #connessione al server
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #I create a TCP / IPv4 socket, first it sends, I create the base that does everything
+    s.connect(SERVER)       #connection to the server
 
-    ricev = Receiver(s) #riceve i messaggi, per far modo che il server quando rimanda il messaggio ai client arriva a tutti
+    ricev = Receiver(s) #receives messages, so that when the server sends the message back to clients, it reaches everyone
     ricev.start()
 
     comando = 'ESCI'
     while True:
         time.sleep(0.2) 
 
-        concentrazione = ModuloClient.museConcentrazione() #funzione che calcola il livello di concentrazione
+        concentrazione = ModuloClient.museConcentrazione() #function that calculates the concentration level
         
         #print("comando concentrazione: ", concentrazione)
         
         time.sleep(0.5)
         
         #lettura_file = open("file.txt", "r").read()
-        if(concentrazione == 'W'): #soggetto concentrato
-            comando = ModuloClient.museDxSx() #controllo di dove e se il soggetto gira la testa
+        if(concentrazione == 'W'): #concentrated subject
+            comando = ModuloClient.museDxSx() #control of where and if the subject turns his head
             print("comando concentrazione: ", comando)
-            s.sendall(comando.encode()) #manda il messaggio al server
+            s.sendall(comando.encode()) #send the message to the server
             #time.sleep(5)       
         else:
-            comando = concentrazione #alphabot fermo (ESCI) causa soggetto non concentrato
+            comando = concentrazione #alphabot stopped (ESCI) cause unconcentrated subject
             print("comando concentrazione: ", concentrazione)
-            s.sendall(comando.encode()) #manda il messaggio al server
+            s.sendall(comando.encode()) #send the message to the server
             #time.sleep(5)
 
-        if 'exit' in comando:   #In caso si dovesse interrompere la connessione
-            ricev.stop_run()    #interrompe la connessione
+        if 'exit' in comando:   #In case the connection should be interrupted
+            ricev.stop_run()    #breaks the connection
             logging.info("Disconnessione...")
             break
 
