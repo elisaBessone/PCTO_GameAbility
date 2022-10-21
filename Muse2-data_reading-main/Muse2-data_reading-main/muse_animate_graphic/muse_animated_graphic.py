@@ -3,7 +3,7 @@ muse animated graphic
 PCTO project of ITIS MARIO DELPOZZO CUNEO
 """
 
-#crea un grafico con i dati EEG dati dal muse
+#creates a graph with the EEG data given by the muse
 
 import numpy as np 
 from pylsl import StreamInlet, resolve_byprop
