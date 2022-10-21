@@ -9,3 +9,6 @@ Download latest version from the **BlueMuse directory in this repository** and u
 Navigate to the unzipped app folder and run the **.\InstallBlueMuse.ps1** PowerShell command (right click and choose Run with PowerShell or execute from terminal directly):
 
 Follow the prompts - the script should automatically install the security certificate, all dependencies, and the BlueMuse app.
+
+## SCRIPTS
+If you want to do a script you have to have in the same directory the "muselsl" and import it.
