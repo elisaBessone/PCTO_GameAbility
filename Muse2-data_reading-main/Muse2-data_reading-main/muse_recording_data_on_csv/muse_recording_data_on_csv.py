@@ -3,7 +3,7 @@ muse recording data on csv
 PCTO project of ITIS MARIO DELPOZZO CUNEO
 """
 
-#registra i dati EEG del muse in un file csv
+#records the EEG data of the muse in a csv file
 
 import numpy as np 
 from pylsl import StreamInlet, resolve_byprop
